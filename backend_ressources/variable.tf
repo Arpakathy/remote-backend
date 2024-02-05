@@ -17,7 +17,7 @@ variable "file-key" {
 
 variable "file-source" {
   type = string
-  default = "C:/Users/JAC COMPUTERS SARL/Documents/PRROJECTS/Project 11_Deploy Jenkins Server Using Terraform then configure the remote backend/terraform.tfstate"
+  default = "/home/ec2-user/remote-backend/terraform.tfstate"
 }
 
 variable "table_name" {
