@@ -7,13 +7,13 @@ terraform {
   }
 }
 
-# configure the AWS provider
+# Configure the AWS provider
 
 provider "aws" {
   region = var.region
 }
 
-#The below code is for creating a vpc
+# The below code is for creating a vpc
 
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr
@@ -38,7 +38,7 @@ resource "aws_internet_gateway" "igw" {
 
 }
 
-#Creating Route table 
+# Creating Route table 
 
 resource "aws_route_table" "public-routetab" {
   vpc_id = aws_vpc.vpc.id
@@ -67,7 +67,7 @@ resource "tls_private_key" "ec2_key" {
   rsa_bits  = 2048
 }
 
-# creating the keypair in aws
+# Creating the keypair in aws
 
 resource "aws_key_pair" "ec2_key" {
   key_name   = var.keypair_name                 
@@ -147,8 +147,18 @@ resource "aws_instance" "jenkins-ec2" {
  
  }
 
+# Here we configure the remote BACKEND to enable others to work on the same code
+terraform {
+  backend "s3" {
+    bucket = aws_s3_bucket.buck-1.id       // Paste the id of the bucket we priviously created 
+    key    = "terraform.tfstate"           // Paste the key of the same bucket
+    region = "us-east-2"
+    dynamodb_table = "terraform-locking"   // From the DynamoDB table we previously created to prevent the state file from being corrupted when more than one collaborator executes the Terraform Apply command at the same time
+    encrypt = true
+  }
+}
 
-# print the link to be redirected to the jenkins server
+# Print the link to be redirected to the jenkins server
 
 output "INFO" {
   value = "AWS Resources and Jenkins Server has been provisioned. Go to http://${aws_instance.jenkins-ec2.public_ip}:8080"
