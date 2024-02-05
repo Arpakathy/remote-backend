@@ -37,5 +37,5 @@ variable "instance_type" {
 
 variable "aws_ami" {
   type = string
-  default = "ami-0aedf6b1cb669b4c7"
+  default = "ami-0866a04d72a1f5479"
 }
