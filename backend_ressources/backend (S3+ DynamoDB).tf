@@ -29,16 +29,16 @@ resource "aws_s3_bucket_versioning" "versioning_example" {
   }
 }
 
-# Upload files to S3 Bucket 
+# Add key to S3 Bucket 
 
-resource "aws_s3_object" "provision_source_files" {
+resource "aws_s3_object" "provision_key_file" {
     bucket  = aws_s3_bucket.buck-1.id
     key     = var.file-key
-    source  = var.file-source
+
 }
 
 
-resource "aws_dynamodb_table" "my_first_table" {
+resource "aws_dynamodb_table" "table_1" {
   name           = "${var.table_name}"
   billing_mode   = "${var.table_billing_mode}"
   hash_key       = "LockID"
