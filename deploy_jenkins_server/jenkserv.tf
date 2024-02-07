@@ -133,7 +133,7 @@ resource "aws_instance" "jenkins-ec2" {
 # Here we configure the remote BACKEND to enable others to work on the same code
 terraform {
   backend "s3" {
-    bucket = aws_s3_bucket.buck-1.id       // Paste the id of the bucket we priviously created 
+    bucket = "remote-backend-bucket-1"       // Paste the id of the bucket we priviously created 
     key    = "terraform.tfstate"           // Paste the key of the same bucket
     region = "us-east-2"
     dynamodb_table = "terraform-locking"   // From the DynamoDB table we previously created to prevent the state file from being corrupted when more than one collaborator executes the Terraform Apply command at the same time
