@@ -22,7 +22,7 @@ resource "aws_vpc" "vpc" {
   instance_tenancy     = "default"
 }
 
-# Create Public Subnet for EC2
+# Create Public Subnet for the jenkins server
 
 resource "aws_subnet" "subnet-public-1" {
   vpc_id                  = aws_vpc.vpc.id
@@ -82,7 +82,7 @@ resource "local_file" "ssh_key" {
   file_permission = "0400"
 }
 
-# Security group for EC2
+# Security group for the jenkins server
 
 resource "aws_security_group" "ec2_allow_rule" {
 
@@ -114,7 +114,7 @@ resource "aws_security_group" "ec2_allow_rule" {
 
 }
 
-# Create EC2 ( only after RDS is provisioned)
+# Create an ec2 instance for the Jenkins server
 resource "aws_instance" "jenkins-ec2" {
   ami                    = var.aws_ami
   instance_type          = var.instance_type
@@ -122,12 +122,10 @@ resource "aws_instance" "jenkins-ec2" {
   vpc_security_group_ids = ["${aws_security_group.ec2_allow_rule.id}"]
   user_data              = "${file("userdata.sh")}"
   key_name               = aws_key_pair.ec2_key.key_name
-  
   tags = {
     Name = "jenkins-server"
   }
 
- 
  }
 
 # Here we configure the remote BACKEND to enable others to work on the same code
